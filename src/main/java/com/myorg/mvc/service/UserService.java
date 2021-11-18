@@ -1,11 +1,13 @@
 package com.myorg.mvc.service;
 
+import com.myorg.mvc.exceptions.UserNotFoundException;
 import com.myorg.mvc.model.User;
 import com.myorg.mvc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,22 +21,26 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserByID(Long ID) {
+        return userRepository.getById(ID);
+    }
+
+
     public User addNewUser(User user) {
-        Optional<User> userByEmail = userRepository.findUserByEmail(user.getEmail());
-        if (userByEmail.isPresent()) {
-            throw new IllegalStateException("User with this email is registered");
-        }
+        userRepository.findUserByEmail(user.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(user.getId()));
+
         userRepository.save(user);
         return user;
     }
 
     public User deleteUser(Long userID) {
-        Optional<User> userByID = userRepository.findById(userID);
-        if (!userByID.isPresent()) {
-            throw new IllegalStateException("This user doesn't exist");
-        }
+        userRepository.findById(userID)
+                .orElseThrow(() -> new UserNotFoundException(userID));
+        User userToDelete = userRepository.findById(userID).get();
+
         userRepository.deleteById(userID);
-        return userByID.get();
+        return userToDelete;
     }
 
     @Transactional
@@ -42,8 +48,7 @@ public class UserService {
 
         User user = userRepository
                 .findById(userID)
-                .orElseThrow(() -> new IllegalStateException(
-                        "This user does not exist"));
+                .orElseThrow(() -> new UserNotFoundException(userID));
 
         if (isValidName(name, user)) {
             user.setName(name);

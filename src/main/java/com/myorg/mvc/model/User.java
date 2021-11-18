@@ -1,9 +1,18 @@
 package com.myorg.mvc.model;
 
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import java.time.LocalDate;
 
+@Entity
 public class User {
-    private Long id;
+
+    @javax.persistence.Id
+    private @Id
+    @GeneratedValue
+    Long id;
     private String name;
     private String email;
     private LocalDate birthday;

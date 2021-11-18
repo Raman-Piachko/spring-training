@@ -17,6 +17,6 @@ public class ApplicationConfig {
 
     @Bean
     UserController userController() {
-        return new UserController(userService());
+        return new UserController();
     }
 }
