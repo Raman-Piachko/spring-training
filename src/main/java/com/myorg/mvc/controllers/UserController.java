@@ -1,9 +1,10 @@
 package com.myorg.mvc.controllers;
 
 import com.myorg.mvc.model.User;
-import com.myorg.mvc.service.UserService;
+import com.myorg.mvc.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,19 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
-    UserService userService;
+    private final
+    UserServiceImpl userService;
 
-    @RequestMapping("/all")
-    public List getUsers() {
-        return userService.getAllUsers();
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("{userId}")
-    public User getByID(@PathVariable("userId") Long ID) {
-        return userService.getUserByID(ID);
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping(value = "/all")
+    public String getUsers(Model model) {
+        List<User> allUsers = userService.getAllUsers();
+        model.addAttribute("users", allUsers);
+        return "all";
+    }
+
+    @GetMapping("/{userId}")
+    public String getByID(@PathVariable("userId") Long userId, Model model) {
+        User userById = userService.getUserById(userId);
+        model.addAttribute("user", userById);
+        return "userById";
     }
 
     @PostMapping
@@ -41,10 +56,10 @@ public class UserController {
     }
 
     @PutMapping("/{userId}&{name}&{email}")
-    public User updateUser(@PathVariable("userID") Long userID,
+    public User updateUser(@PathVariable("userId") Long userId,
                            @PathVariable("name") String name,
                            @PathVariable("email") String email) {
-        userService.updateUser(userID, name, email);
-        return userService.getUserByID(userID);
+        userService.updateUser(userId, name, email);
+        return userService.getUserById(userId);
     }
 }

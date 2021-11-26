@@ -1,31 +1,36 @@
 package com.myorg.mvc.model;
 
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import java.time.LocalDate;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
+@Table(name = "User")
 public class User {
-
-    @javax.persistence.Id
-    private @Id
-    @GeneratedValue
-    Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "email")
     private String email;
-    private LocalDate birthday;
+    @Column(name = "birthday")
+    private String birthday;
 
     public User() {
-        this.id = id;
     }
 
     public User(
             Long id,
             String name,
             String email,
-            LocalDate dob
+            String dob
 
     ) {
         this.id = id;
@@ -37,7 +42,7 @@ public class User {
     public User(
             String name,
             String email,
-            LocalDate dob
+            String dob
     ) {
         this.name = name;
         this.email = email;
@@ -68,14 +73,26 @@ public class User {
         this.email = email;
     }
 
-    public LocalDate getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) && name.equals(user.name) && email.equals(user.email) && birthday.equals(user.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, birthday);
+    }
 
     @Override
     public String toString() {
