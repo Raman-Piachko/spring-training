@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
 
@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
         }
 
         if (isValidEmail(email, user)) {
-
             Optional<User> userOptional = userRepository
                     .findUserByEmail(email);
             if (userOptional.isPresent()) {

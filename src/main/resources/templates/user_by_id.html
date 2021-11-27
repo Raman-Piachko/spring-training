@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org
+https://thymeleaf.org
+http://thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${userById.getName()}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+
+<span th:text="${userById.getName()}"> </span>
+<span th:text="${userById.getEmail()}"> </span>
+<span th:text="${userById.getBirthday()}"> </span>
+</body>
+</html>

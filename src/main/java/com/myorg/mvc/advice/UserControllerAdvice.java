@@ -24,7 +24,7 @@ public class UserControllerAdvice {
     public String handleException(DoubleRegistrationException e, Model model) {
         String message = e.getMessage();
         model.addAttribute("message", message);
-        return "forbiddenError";
+        return "forbidden_error";
     }
 
 }

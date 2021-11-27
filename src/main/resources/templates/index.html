@@ -1,8 +1,17 @@
-<html>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+</head>
 <body>
-<h2>Hello in simple MVC application!</h2>
-<form action="all">
-    <input type="submit" value="See all users" />
-</form>
+<h1>Welcome</h1>
+<div>
+    <a th:href="@{/registration_form}">Go to User Registration Form</a>
+</div>
+<div>
+    <a th:href="@{/users}">See all users</a>
+</div>
 </body>
 </html>
