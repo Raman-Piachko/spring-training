@@ -17,8 +17,7 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    private final
-    UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
@@ -32,7 +31,7 @@ public class UserController {
 
     @GetMapping("/registration_form")
     public String showRegistrationForm(Model model) {
-        User user = new User();
+        User user = userService.createEmptyUser();
         model.addAttribute("user", user);
         return "registration_form";
     }

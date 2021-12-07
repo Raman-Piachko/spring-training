@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
-
     public User addNewUser(User user) {
         Optional<User> userByEmail = userRepository.findUserByEmail(user.getEmail());
         if (userByEmail.isPresent()) {
@@ -40,17 +39,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public User deleteUser(Long userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-        User userToDelete = userRepository.findById(userId).get();
-
+        User userToDelete = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.deleteById(userId);
+
         return userToDelete;
     }
 
-
     public void updateUser(Long userId, String name, String email) {
-
         User user = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -69,6 +64,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User createEmptyUser() {
+        return new User();
+    }
+
     private boolean isValidEmail(String email, User user) {
         return email != null && !email.trim().isBlank() &&
                 !Objects.equals(user.getEmail(), email);
@@ -77,5 +77,4 @@ public class UserServiceImpl implements UserService {
     private boolean isValidName(String name, User user) {
         return name != null && name.length() > 0 && !Objects.equals(user.getName(), name);
     }
-
 }
