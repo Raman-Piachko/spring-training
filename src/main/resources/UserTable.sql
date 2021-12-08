@@ -1,4 +1,3 @@
-
 create table User
 (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
