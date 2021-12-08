@@ -1,6 +1,6 @@
 package com.myorg.mvc.controllers;
 
-import com.myorg.mvc.model.User;
+import com.myorg.mvc.entity.User;
 import com.myorg.mvc.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,16 +58,18 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable("id") Long userID,Model model) {
+    public String deleteUser(@PathVariable("id") Long userID, Model model) {
         userService.deleteUser(userID);
         return getUsers(model);
     }
 
-    @PutMapping("/{userId}&{name}&{email}")
+    @PutMapping("/{userId}&{firstName}&{lastName}&{email}&{birthday}")
     public String updateUser(@PathVariable("userId") Long userId,
-                             @PathVariable("name") String name,
-                             @PathVariable("email") String email, Model model) {
-        userService.updateUser(userId, name, email);
+                             @PathVariable("firstName") String firstName,
+                             @PathVariable("lastName") String lastName,
+                             @PathVariable("email") String email,
+                             @PathVariable("birthday") String birthday, Model model) {
+        userService.updateUser(userId, firstName, lastName, email, birthday);
         return getByID(userId, model);
     }
 }

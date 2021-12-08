@@ -1,6 +1,6 @@
 package com.myorg.mvc.controllers;
 
-import com.myorg.mvc.model.User;
+import com.myorg.mvc.entity.User;
 import com.myorg.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

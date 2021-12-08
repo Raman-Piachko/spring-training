@@ -1,8 +1,8 @@
 package com.myorg.mvc.service;
 
+import com.myorg.mvc.entity.User;
 import com.myorg.mvc.exceptions.DoubleRegistrationException;
 import com.myorg.mvc.exceptions.UserNotFoundException;
-import com.myorg.mvc.model.User;
 import com.myorg.mvc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private static final String regexPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
     @Autowired
     private UserRepository userRepository;
+
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -45,12 +49,14 @@ public class UserServiceImpl implements UserService {
         return userToDelete;
     }
 
-    public void updateUser(Long userId, String name, String email) {
+    public User updateUser(Long userId, String firstName, String lastName, String email, String birthday) {
         User user = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        insertValues(user, user, email, name, email);
+        String userEmail = user.getEmail();
+        insertValues(user, userEmail, email, firstName, lastName, birthday);
+        return user;
     }
 
 
@@ -64,35 +70,37 @@ public class UserServiceImpl implements UserService {
         User repoUser = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+        String repoUserEmail = repoUser.getEmail();
         String userEmail = user.getEmail();
-        String userName = user.getName();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
         String userBirthday = user.getBirthday();
 
-        insertValues(user, repoUser, userEmail, userName, userBirthday);
+        insertValues(repoUser, repoUserEmail, userEmail, firstName, lastName, userBirthday);
         return user;
     }
 
-    private void insertValues(User user, User repoUser, String userEmail, String userName, String userBirthday) {
-        if (isValidName(userName, repoUser)) {
-            repoUser.setName(userName);
+    private void insertValues(User repoUser, String repoUserEmail, String userEmail, String firstName, String lastName,
+                              String userBirthday) {
+        if (isValidName(firstName, lastName)) {
+            repoUser.setFirstName(firstName);
+            repoUser.setLastName(lastName);
         }
 
-        if (isValidEmail(userEmail, repoUser)) {
-            Optional<User> userOptional = userRepository
-                    .findUserByEmail(userEmail);
-            if (userOptional.isPresent()) {
-                throw new DoubleRegistrationException(user.getEmail());
-            }
-            repoUser.setEmail(userBirthday);
-        }
+        if (isValidEmail(userEmail, regexPattern, repoUserEmail)) {
+            repoUser.setEmail(userEmail);
+        } else throw new DoubleRegistrationException(repoUser.getEmail());
+
+        repoUser.setBirthday(userBirthday);
     }
 
-    private boolean isValidEmail(String email, User user) {
-        return email != null && !email.trim().isBlank() &&
-                !Objects.equals(user.getEmail(), email);
+    private boolean isValidEmail(String emailAddress, String regexPattern, String userEmail) {
+        return !Objects.equals(userEmail, emailAddress) && Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
     }
 
-    private boolean isValidName(String name, User user) {
-        return name != null && name.length() > 0 && !Objects.equals(user.getName(), name);
+    private boolean isValidName(String firstName, String lastName) {
+        return firstName != null && lastName != null && firstName.length() > 0 && lastName.length() > 0;
     }
 }

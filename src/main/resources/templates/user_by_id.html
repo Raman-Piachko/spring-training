@@ -5,13 +5,15 @@ https://thymeleaf.org
 http://thymeleaf.org ">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${userById.getName()}"></title>
+    <title th:text="${userById.getFirstName()} ${userById.getLastName()}></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
 
-<span th:text="${userById.getName()}"> </span>
+<span th:text="${userById.getFirstName()}"> </span>
+<span th:text="${userById.getLastName()}"> </span>
 <span th:text="${userById.getEmail()}"> </span>
-<span th:text="${userById.getBirthday()}"> </span>
+<span th:date="${userById.getBirthday()}"> </span>
+
 </body>
 </html>

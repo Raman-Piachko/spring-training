@@ -1,4 +1,4 @@
-package com.myorg.mvc.model;
+package com.myorg.mvc.entity;
 
 
 import javax.persistence.Column;
@@ -10,14 +10,16 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "first_name")
+    private String firstName;
     @Column(name = "email")
     private String email;
     @Column(name = "birthday")
@@ -28,23 +30,26 @@ public class User {
 
     public User(
             Long id,
-            String name,
+            String lastName,
+            String firstName,
             String email,
             String dob
-
     ) {
         this.id = id;
-        this.name = name;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.email = email;
         this.birthday = dob;
     }
 
     public User(
-            String name,
+            String lastName,
+            String firstName,
             String email,
             String dob
     ) {
-        this.name = name;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.email = email;
         this.birthday = dob;
     }
@@ -57,12 +62,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getEmail() {
@@ -86,16 +99,26 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id) && name.equals(user.name) && email.equals(user.email) && birthday.equals(user.birthday);
+        return id.equals(user.id)
+                && lastName.equals(user.lastName)
+                && firstName.equals(user.firstName)
+                && email.equals(user.email)
+                && birthday.equals(user.birthday);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, birthday);
+        return Objects.hash(id, lastName, firstName, email, birthday);
     }
 
     @Override
     public String toString() {
-        return "User name= " + name + ", " + birthday + ", email= " + email;
+        return "User{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday='" + birthday + '\'' +
+                '}';
     }
 }

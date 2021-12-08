@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Users</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/all.css}"/>
 </head>
 <body>
 <p>
@@ -16,14 +17,16 @@
 <table>
     <thead>
     <tr>
-        <th> Name</th>
+        <th> First name</th>
+        <th> Last name</th>
         <th> Birthday</th>
         <th> Email</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user : ${users}">
-        <td><span th:text="${user.getName()}"> </span></td>
+        <td><span th:text="${user.getFirstName()}"> </span></td>
+        <td><span th:text="${user.getLastName()}"> </span></td>
         <td><span th:text="${user.getBirthday()}"> </span>
         <td><span th:text="${user.getEmail()}"> </span></td>
         <td>
@@ -35,7 +38,7 @@
     </tbody>
 </table>
 <div>
-    <a th:href="@{/index}">Go to home page</a>
+    <a th:href="@{/}">Go to home page</a>
 </div>
 </body>
 </html>

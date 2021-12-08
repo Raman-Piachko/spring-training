@@ -1,10 +1,12 @@
 package com.myorg.mvc.service;
 
-import com.myorg.mvc.model.User;
+import com.myorg.mvc.entity.User;
 
 import java.util.List;
 
 public interface UserService {
+    User createEmptyUser();
+
     List<User> getAllUsers();
 
     User addNewUser(User user);
@@ -13,8 +15,7 @@ public interface UserService {
 
     User deleteUser(Long userID);
 
-    void updateUser(Long userId, String name, String email);
-    User createEmptyUser();
-
     User updateUser(Long userId, User user);
+
+    User updateUser(Long userId, String firstName, String lastName, String email, String birthday);
 }

@@ -1,7 +1,7 @@
 package com.myorg.mvc.repository;
 
 
-import com.myorg.mvc.model.User;
+import com.myorg.mvc.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

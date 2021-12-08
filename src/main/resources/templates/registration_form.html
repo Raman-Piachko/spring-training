@@ -16,16 +16,20 @@
             <form th:action="@{/save}" th:object="${user}" method="post">
                 <div class="form-row">
                     <div class="col-md-6 form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" th:field="*{name}">
+                        <label>First name</label>
+                        <input type="text" class="form-control" required th:field="*{firstName}">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Last name</label>
+                        <input type="text" class="form-control" required th:field="*{lastName}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Email</label>
-                        <input type="text" class="form-control" th:field="*{email}">
+                        <input type="text" class="form-control" required th:field="*{email}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Birthday</label>
-                        <input type="text" class="form-control" placeholder="yyyy-MM-dd" th:field="*{birthday}">
+                        <input type="date" class="form-control" required placeholder="yyyy-MM-dd" th:field="*{birthday}">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
