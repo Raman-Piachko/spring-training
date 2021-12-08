@@ -50,23 +50,41 @@ public class UserServiceImpl implements UserService {
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        if (isValidName(name, user)) {
-            user.setName(name);
-        }
-
-        if (isValidEmail(email, user)) {
-            Optional<User> userOptional = userRepository
-                    .findUserByEmail(email);
-            if (userOptional.isPresent()) {
-                throw new DoubleRegistrationException(user.getEmail());
-            }
-            user.setEmail(email);
-        }
+        insertValues(user, user, email, name, email);
     }
+
 
     @Override
     public User createEmptyUser() {
         return new User();
+    }
+
+    @Override
+    public User updateUser(Long userId, User user) {
+        User repoUser = userRepository
+                .findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        String userEmail = user.getEmail();
+        String userName = user.getName();
+        String userBirthday = user.getBirthday();
+
+        insertValues(user, repoUser, userEmail, userName, userBirthday);
+        return user;
+    }
+
+    private void insertValues(User user, User repoUser, String userEmail, String userName, String userBirthday) {
+        if (isValidName(userName, repoUser)) {
+            repoUser.setName(userName);
+        }
+
+        if (isValidEmail(userEmail, repoUser)) {
+            Optional<User> userOptional = userRepository
+                    .findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                throw new DoubleRegistrationException(user.getEmail());
+            }
+            repoUser.setEmail(userBirthday);
+        }
     }
 
     private boolean isValidEmail(String email, User user) {

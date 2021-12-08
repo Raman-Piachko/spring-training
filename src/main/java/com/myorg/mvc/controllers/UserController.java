@@ -24,8 +24,8 @@ public class UserController {
     }
 
 
-    @GetMapping("/")
-    public String showHome(Model model) {
+    @GetMapping()
+    public String showHome() {
         return "index";
     }
 
@@ -37,14 +37,14 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute User user, Model model) {
+    public String saveUser(@ModelAttribute User user, Model model) {
         userService.addNewUser(user);
-        model.addAttribute("employee", user);
-        return "display_form";
+        model.addAttribute("user", user);
+        return getUsers(model);
     }
 
 
-    @GetMapping(value = "/users")
+    @GetMapping("/users")
     public String getUsers(Model model) {
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("users", allUsers);
@@ -58,17 +58,17 @@ public class UserController {
         return "user_by_id";
     }
 
-    @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable("userId") Long userID) {
+    @DeleteMapping("/users/{id}")
+    public String deleteUser(@PathVariable("id") Long userID,Model model) {
         userService.deleteUser(userID);
-        return "successfulDeletion";
+        return getUsers(model);
     }
 
     @PutMapping("/{userId}&{name}&{email}")
-    public User updateUser(@PathVariable("userId") Long userId,
-                           @PathVariable("name") String name,
-                           @PathVariable("email") String email) {
+    public String updateUser(@PathVariable("userId") Long userId,
+                             @PathVariable("name") String name,
+                             @PathVariable("email") String email, Model model) {
         userService.updateUser(userId, name, email);
-        return userService.getUserById(userId);
+        return getByID(userId, model);
     }
 }

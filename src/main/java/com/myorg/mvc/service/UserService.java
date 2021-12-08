@@ -15,4 +15,6 @@ public interface UserService {
 
     void updateUser(Long userId, String name, String email);
     User createEmptyUser();
+
+    User updateUser(Long userId, User user);
 }

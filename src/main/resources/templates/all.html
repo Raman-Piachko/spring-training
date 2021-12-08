@@ -7,8 +7,12 @@
 </head>
 <body>
 <p>
-    <span >List of users</span>
+    <span>List of users</span>
 </p>
+<span th:if="${users.isEmpty()}">
+    <span colspan="2">No users Available</span>
+</span>
+
 <table>
     <thead>
     <tr>
@@ -18,15 +22,18 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${users.isEmpty()}">
-        <td colspan="2"> No users Available</td>
-    </tr>
     <tr th:each="user : ${users}">
         <td><span th:text="${user.getName()}"> </span></td>
         <td><span th:text="${user.getBirthday()}"> </span>
         <td><span th:text="${user.getEmail()}"> </span></td>
+        <td>
+            <form th:action="@{/users/{id}(id=${user.getId()})}" th:method="delete">
+                <input type="submit" value="delete"/>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>
