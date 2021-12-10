@@ -1,7 +1,6 @@
 package com.myorg.mvc.entity;
 
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,32 +13,41 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-    @Column(name = "last_name")
+    private Long userId;
     private String lastName;
-    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "email")
     private String email;
-    @Column(name = "birthday")
     private String birthday;
+    private String username;
+    private String password;
 
     public User() {
     }
 
     public User(
-            Long id,
+            Long userId,
             String lastName,
             String firstName,
             String email,
             String dob
     ) {
-        this.id = id;
+        this.userId = userId;
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
         this.birthday = dob;
+    }
+
+    public User(String lastName, String firstName, String email,
+                String birthday, String username, String password,
+                String matchingPassword) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.birthday = birthday;
+        this.username = username;
+        this.password = password;
+
     }
 
     public User(
@@ -54,12 +62,12 @@ public class User {
         this.birthday = dob;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long id) {
+        this.userId = id;
     }
 
     public String getLastName() {
@@ -94,12 +102,28 @@ public class User {
         this.birthday = birthday;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id)
+        return userId.equals(user.userId)
                 && lastName.equals(user.lastName)
                 && firstName.equals(user.firstName)
                 && email.equals(user.email)
@@ -108,13 +132,13 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lastName, firstName, email, birthday);
+        return Objects.hash(userId, lastName, firstName, email, birthday);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + userId +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +

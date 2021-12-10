@@ -30,7 +30,7 @@
         <td><span th:text="${user.getBirthday()}"> </span>
         <td><span th:text="${user.getEmail()}"> </span></td>
         <td>
-            <form th:action="@{/users/{id}(id=${user.getId()})}" th:method="delete">
+            <form th:action="@{/users/{id}(id=${user.getUserId()})}" th:method="delete">
                 <input type="submit" value="delete"/>
             </form>
         </td>
