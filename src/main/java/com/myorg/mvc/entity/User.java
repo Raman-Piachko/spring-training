@@ -1,27 +1,61 @@
 package com.myorg.mvc.entity;
 
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "email")
     private String email;
+    @Column(name = "birthday")
     private String birthday;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
     public User() {
+    }
+
+    public User(
+            String lastName,
+            String firstName,
+            String email,
+            String dob
+    ) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.birthday = dob;
     }
 
     public User(
@@ -39,27 +73,28 @@ public class User {
     }
 
     public User(String lastName, String firstName, String email,
-                String birthday, String username, String password,
-                String matchingPassword) {
+                String birthday, String username, String password) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
         this.birthday = birthday;
         this.username = username;
         this.password = password;
-
     }
 
-    public User(
-            String lastName,
-            String firstName,
-            String email,
-            String dob
-    ) {
+    public User(String lastName,
+                String firstName,
+                String email, String birthday,
+                String username,
+                String password,
+                Set<Role> roles) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
-        this.birthday = dob;
+        this.birthday = birthday;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public Long getUserId() {
@@ -116,6 +151,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

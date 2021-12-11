@@ -1,26 +1,37 @@
 package com.myorg.mvc.service;
 
 import com.myorg.mvc.entity.User;
+import com.myorg.mvc.entity.UserDetailsImpl;
 import com.myorg.mvc.exceptions.DoubleRegistrationException;
 import com.myorg.mvc.exceptions.UserNotFoundException;
 import com.myorg.mvc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service("UserService")
+public class UserServiceImpl implements UserService, UserDetailsService {
     private static final String regexPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
     @Autowired
     private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new UserDetailsImpl(user);
     }
 
     @Override
@@ -32,13 +43,21 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    public User addNewUser(User user) {
-        Optional<User> userByEmail = userRepository.findUserByEmail(user.getEmail());
+    public User addNewUser(User userToSave) {
+        Optional<User> userByEmail = userRepository.findByEmail(userToSave.getEmail());
         if (userByEmail.isPresent()) {
-            throw new DoubleRegistrationException(user.getEmail());
+            throw new DoubleRegistrationException(userToSave.getEmail());
         }
+        User userToInsert = createEmptyUser();
+        userToInsert.setFirstName(userToSave.getFirstName());
+        userToInsert.setLastName(userToSave.getLastName());
+        userToInsert.setEmail(userToSave.getEmail());
+        userToInsert.setBirthday(userToSave.getBirthday());
+        String userName = (userToSave.getFirstName() + userToSave.getLastName()).toLowerCase(Locale.ROOT);
+        userToInsert.setUsername(userName);
+        userToInsert.setPassword(passwordEncoder.encode(userToSave.getPassword()));
 
-        return userRepository.save(user);
+        return userRepository.save(userToInsert);
     }
 
     public User deleteUser(Long userId) {
@@ -49,9 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User updateUser(Long userId, String firstName, String lastName, String email, String birthday) {
-        User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         String userEmail = user.getEmail();
         insertValues(user, userEmail, email, firstName, lastName, birthday);
@@ -66,9 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long userId, User user) {
-        User repoUser = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+        User repoUser = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         String repoUserEmail = repoUser.getEmail();
         String userEmail = user.getEmail();
         String firstName = user.getFirstName();
@@ -79,8 +94,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private void insertValues(User repoUser, String repoUserEmail, String userEmail, String firstName, String lastName,
-                              String userBirthday) {
+    private void insertValues(User repoUser, String repoUserEmail, String userEmail, String firstName, String lastName, String userBirthday) {
         if (isValidName(firstName, lastName)) {
             repoUser.setFirstName(firstName);
             repoUser.setLastName(lastName);
@@ -94,9 +108,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean isValidEmail(String emailAddress, String regexPattern, String userEmail) {
-        return !Objects.equals(userEmail, emailAddress) && Pattern.compile(regexPattern)
-                .matcher(emailAddress)
-                .matches();
+        return !Objects.equals(userEmail, emailAddress) && Pattern.compile(regexPattern).matcher(emailAddress).matches();
     }
 
     private boolean isValidName(String firstName, String lastName) {
