@@ -6,8 +6,6 @@
     <title>Create New User</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="app.js">
-    </script>
 </head>
 <body>
 <div class="container my-3">
@@ -26,11 +24,13 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Email</label>
-                        <input type="text" class="form-control" required th:field="*{email}">
+                        <input type="email"
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                               placeholder="email@example.com" class="form-control" required th:field="*{email}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Birthday</label>
-                        <input type="date" class="form-control" required placeholder="yyyy-MM-dd"
+                        <input type="date" class="form-control" placeholder="yyyy-MM-dd" required
                                th:field="*{birthday}">
                     </div>
                     <div class="col-md-6 form-group">
@@ -40,14 +40,17 @@
                                th:field="*{password}"/>
                     </div>
                     <div class="col-md-6 form-group">
-                        <label>Confirm</label>
+                        <label>Confirm password</label>
                         <input type="password" id="txtConfirmPassword" class="cor_password" required
                                placeholder="********" maxlength="8">
                     </div>
                 </div>
                 <div class="error"></div>
-                <button type="submit" id="btnSubmit" class="btn btn-primary btn-block mt-3">Save</button>
+                <button type="submit" id="btnSubmit" class="btn btn-primary btn-block mt-3">
+                    Save
+                </button>
             </form>
+            <a class="btn btn-primary btn-block mt-3" th:href="@{/}">Go to home page</a>
         </div>
     </div>
 </div>
@@ -55,18 +58,16 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $("#btnSubmit").click(function () {
-            var password = $("#txtPassword").val();
-            var confirmPassword = $("#txtConfirmPassword").val();
-            if (password != confirmPassword) {
-                alert("Passwords do not match.");
-                return false;
-            }
-            return true;
-        });
+<script type="text/javascript">$(function () {
+    $("#btnSubmit").click(function () {
+        var password = $("#txtPassword").val();
+        var confirmPassword = $("#txtConfirmPassword").val();
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+        return true;
     });
-</script>
+});</script>
 </body>
 </html>

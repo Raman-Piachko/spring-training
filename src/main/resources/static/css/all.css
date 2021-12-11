@@ -11,3 +11,7 @@ th, td {
 td {
     text-align: center;
 }
+
+td:hover {
+    cursor: pointer;
+}

@@ -3,6 +3,7 @@ package com.myorg.mvc.controllers;
 import com.myorg.mvc.entity.User;
 import com.myorg.mvc.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,16 +18,22 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    private final UserServiceImpl userService;
-
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
-
+    @Qualifier("UserService")
+    private UserServiceImpl userService;
 
     @GetMapping()
     public String showHome() {
         return "index";
+    }
+
+    @GetMapping("/login")
+    public String logIn() {
+        return "login";
+    }
+
+    @GetMapping("/register_success")
+    public String success() {
+        return "register_success";
     }
 
     @GetMapping("/registration_form")
@@ -37,9 +44,9 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute User user, Model model) {
+    public String saveUser(@ModelAttribute User user) {
         userService.addNewUser(user);
-        return getUsers(model);
+        return "redirect:/register_success";
     }
 
 
@@ -58,9 +65,9 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable("id") Long userID, Model model) {
+    public String deleteUser(@PathVariable("id") Long userID) {
         userService.deleteUser(userID);
-        return getUsers(model);
+        return "redirect:/users";
     }
 
     @PutMapping("/{userId}&{firstName}&{lastName}&{email}&{birthday}")

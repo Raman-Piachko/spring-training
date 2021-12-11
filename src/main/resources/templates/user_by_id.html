@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://thymeleaf.org
-https://thymeleaf.org
-http://thymeleaf.org ">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${userById.getFirstName()} ${userById.getLastName()}></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${userById.getUsername()}"></title>
+
 </head>
 <body>
 
@@ -15,5 +13,8 @@ http://thymeleaf.org ">
 <span th:text="${userById.getEmail()}"> </span>
 <span th:date="${userById.getBirthday()}"> </span>
 
+<div>
+    <a th:href="@{/}">Go to home page</a>
+</div>
 </body>
 </html>
