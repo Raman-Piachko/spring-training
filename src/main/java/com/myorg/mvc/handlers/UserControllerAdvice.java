@@ -1,4 +1,4 @@
-package com.myorg.mvc.advice;
+package com.myorg.mvc.handlers;
 
 import com.myorg.mvc.exceptions.UserServiceException;
 import org.springframework.http.HttpHeaders;
