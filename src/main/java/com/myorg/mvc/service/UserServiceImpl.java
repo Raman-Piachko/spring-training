@@ -75,7 +75,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
-
     @Override
     public User createEmptyUser() {
         return new User();
@@ -102,16 +101,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (isValidEmail(userEmail, repoUserEmail)) {
             repoUser.setEmail(userEmail);
-        } else throw new DoubleRegistrationException(repoUser.getEmail());
+        } else {
+            throw new DoubleRegistrationException(repoUser.getEmail());
+        }
 
         repoUser.setBirthday(userBirthday);
     }
 
     private boolean isValidEmail(String emailAddress, String userEmail) {
-        return !Objects.equals(userEmail, emailAddress) && Pattern.compile(UserServiceImpl.REGEX_PATTERN).matcher(emailAddress).matches();
+        return !Objects.equals(userEmail, emailAddress)
+                && Pattern.compile(UserServiceImpl.REGEX_PATTERN)
+                .matcher(emailAddress)
+                .matches();
     }
 
     private boolean isValidName(String firstName, String lastName) {
-        return firstName != null && lastName != null && firstName.length() > 0 && lastName.length() > 0;
+        return firstName != null
+                && lastName != null
+                && !firstName.trim().isEmpty()
+                && !lastName.trim().isEmpty();
     }
 }

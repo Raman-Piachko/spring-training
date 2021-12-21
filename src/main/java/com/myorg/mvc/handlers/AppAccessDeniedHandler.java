@@ -6,14 +6,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AppAccessDeniedHandler implements AccessDeniedHandler {
 
-    private final static Logger LOGGER = Logger.getLogger(AppAccessDeniedHandler.class);
+    private static final Logger LOGGER = Logger.getLogger(AppAccessDeniedHandler.class);
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException {

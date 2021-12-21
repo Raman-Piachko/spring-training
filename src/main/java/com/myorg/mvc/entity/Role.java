@@ -9,15 +9,15 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
 
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
+
     public Integer getId() {
         return id;
     }

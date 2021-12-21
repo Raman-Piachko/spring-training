@@ -1,9 +1,8 @@
 package com.myorg.mvc.controllers;
 
 import com.myorg.mvc.entity.User;
-import com.myorg.mvc.service.UserServiceImpl;
+import com.myorg.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,10 +17,9 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    @Qualifier("UserService")
-    private UserServiceImpl userService;
+    private UserService userService;
 
-    @GetMapping()
+    @GetMapping
     public String showHome() {
         return "index";
     }
@@ -43,12 +41,11 @@ public class UserController {
         return "registration_form";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/users")
     public String saveUser(@ModelAttribute User user) {
         userService.addNewUser(user);
         return "redirect:/register_success";
     }
-
 
     @GetMapping("/users")
     public String getUsers(Model model) {
