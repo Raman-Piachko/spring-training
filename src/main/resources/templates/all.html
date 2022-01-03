@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/all.css}"/>
+    <script>
+        function rowClicked(value) {
+            location.href = "/users/" + value;
+        }
+    </script>
+</head>
+<body>
+<p>
+    <span>List of users</span>
+</p>
+<table th:if="${!users.isEmpty()}">
+    <thead>
+    <tr>
+        <th> First name</th>
+        <th> Last name</th>
+        <th> Birthday</th>
+        <th> Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}" th:method="get"
+        th:onclick="'javascript:rowClicked(\'' + ${user.getUserId()} + '\');'">
+        <td><span th:text="${user.getFirstName()}"> </span></td>
+        <td><span th:text="${user.getLastName()}"> </span></td>
+        <td><span th:text="${user.getBirthday()}"> </span></td>
+        <td><span th:text="${user.getUsername()}"> </span></td>
+        <td>
+            <form th:action="@{/users/{id}(id=${user.getUserId()})}" th:method="delete">
+                <input type="submit" value="delete"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a th:href="@{/}">Go to home page</a>
+</div>
+</body>
+</html>

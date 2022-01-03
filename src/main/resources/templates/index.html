@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="content">Welcome</h1>
+            <h2 class="content">Log In or Sign Up </h2>
+            <div class="content">
+                <h2>
+                    <a th:href="@{/login}">Log in</a></h2>
+            </div>
+            <div class="content">
+                <h2>
+                    <a th:href="@{/registration_form}">Sign up</a></h2>
+            </div>
+            <div class="content">
+                <a th:href="@{/users}">See all users</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

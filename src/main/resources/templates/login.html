@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Log IN</h2>
+            <form th:action="@{/}" method="get">
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label><b>Username</b></label>
+                        <input type="text" placeholder="Enter Username" name="uname" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label><b>Password</b></label>
+                        <input type="password" placeholder="Enter Password" name="psw" required>
+                    </div>
+                </div>
+                <div class="error"></div>
+                <button type="submit" id="btnSubmit" class="btn btn-primary btn-block mt-3">
+                    LOG IN
+                </button>
+            </form>
+            <a class="btn btn-primary btn-block mt-3" th:href="@{/}">Go to home page</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

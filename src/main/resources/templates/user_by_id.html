@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${userById.getUsername()}"></title>
+
+</head>
+<body>
+
+<span th:text="${userById.getFirstName()}"> </span>
+<span th:text="${userById.getLastName()}"> </span>
+<span th:text="${userById.getEmail()}"> </span>
+<span th:date="${userById.getBirthday()}"> </span>
+
+<div>
+    <a th:href="@{/}">Go to home page</a>
+</div>
+</body>
+</html>
